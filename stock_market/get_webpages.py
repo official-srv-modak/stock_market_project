@@ -100,7 +100,7 @@ def get_table_data(URL):
     print("Success!!! Parsing")
     p = HTMLTableParser()
     p.feed(xhtml)
-    return p.tables[1]
+    pprint(p.tables[1])
     """print("\n\nPANDAS DATAFRAME\n")
     print(pd.DataFrame(p.tables[1]))"""
 
@@ -108,4 +108,4 @@ def get_table_data(URL):
 """number_of_run = int(input("Enter number of run\n"))
 result = performance_check(number_of_run)"""
 
-get_companies_table("top bse companies")
+print(get_companies_table("nifty companies"))
