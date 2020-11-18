@@ -10,6 +10,7 @@ INDIA
 from googlesearch import search
 import time, json
 from bs4 import BeautifulSoup
+from urllib.request import Request, urlopen
 import urllib.request
 from pprint import pprint
 from html_table_parser import HTMLTableParser
@@ -70,6 +71,32 @@ def filter_table(table):
 
     return False
 
+def get_content():
+    #company_name = list_of_companies[0]
+    query = "news of "+"Reliance Industries Ltd."
+    output = search(query, lang='en', num=10, stop=10, pause=2)
+    out = list()
+    output_list = list()
+
+    for url in output:
+        output_list.append(url)
+
+    test_url = output_list[0]
+
+    if test_url.find("economic") != -1:
+        from urllib.request import Request, urlopen
+
+        req = Request(test_url, headers={'User-Agent': 'Mozilla/5.0'})
+        url_contents = urlopen(req).read()
+        # url_contents = urllib.request.urlopen(test_url).read()
+        soup = BeautifulSoup(url_contents, 'html.parser')
+        div = soup.find("div", {"class": "clr flt topicstry"})
+        print(str(div))
+        for href_tag in div.find_all('href'):
+            out.append(str(href_tag))
+        """content = str(div)
+        print(content)"""
+        print(out)
 
 def main():
     """ The main function """
@@ -94,6 +121,8 @@ def main():
             list_of_companies.append(row[tuple_cnt])
         print(list_of_companies)
 
+        # now we fetch the news
 
 
 main()
+get_content()
