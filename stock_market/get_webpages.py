@@ -8,6 +8,8 @@ INDIA
 
 
 from googlesearch import search
+import webbrowser
+import sys
 import time, json
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
@@ -71,38 +73,55 @@ def filter_table(table):
 
     return False
 
-def get_content():
+def get_news_url(company_name):
+    """ This will return the news of all the companies that is entered as the argument"""
+
     #company_name = list_of_companies[0]
-    query = "news of "+"Reliance Industries Ltd."
+    query = "news of "+company_name
     output = search(query, lang='en', num=10, stop=10, pause=2)
     out = list()
     output_list = list()
 
     for url in output:
         output_list.append(url)
+    return output_list
 
-    test_url = output_list[0]
+def get_nifty_companies():
+    """ Return the list of all the nifty companies"""
 
-    if test_url.find("economic") != -1:
-        from urllib.request import Request, urlopen
+    table = get_companies_table("nifty companies")
+    tuple_cnt = 0
+    for tuple in table[0]:
+        if re.search("name", tuple) or re.search("NAME", tuple) or re.search("Name", tuple):
+            break
+        tuple_cnt += 1
+    list_of_companies = list()
+    for row in table[1:]:
+        list_of_companies.append(row[tuple_cnt])
+    #print(list_of_companies)
+    return list_of_companies
 
-        req = Request(test_url, headers={'User-Agent': 'Mozilla/5.0'})
-        url_contents = urlopen(req).read()
-        # url_contents = urllib.request.urlopen(test_url).read()
-        soup = BeautifulSoup(url_contents, 'html.parser')
-        div = soup.find("div", {"class": "clr flt topicstry"})
-        print(str(div))
-        for href_tag in div.find_all('href'):
-            out.append(str(href_tag))
-        """content = str(div)
-        print(content)"""
-        print(out)
+
+def launch_web_browser(sites):
+    print('Opening Sites')
+
+    browser = "safari"
+    wbbrowser = webbrowser.get(browser)
+    count = 0
+    try:
+        for url in sites:
+            if count == 0:
+                wbbrowser.open_new(url.strip())
+                time.sleep(1)
+            else:
+                wbbrowser.open_new_tab(url.strip())
+                time.sleep(1)
+            count += 1
+    except Exception as e:
+        print(e)
 
 def main():
     """ The main function """
-
-    """number_of_run = int(input("Enter number of run\n"))
-    result = performance_check(number_of_run)"""
 
     print("WELCOME!!! You can use this program to extract information and news on the stock market and table of companies")
     print("1. Details on nifty companies")
@@ -110,19 +129,27 @@ def main():
     print("3. Exit")
     val = input()
     if val ==  "1":
-        table = get_companies_table("nifty companies")
-        tuple_cnt = 0
-        for tuple in table[0]:
-            if re.search("name", tuple) or re.search("NAME", tuple) or re.search("Name", tuple):
-                break
-            tuple_cnt += 1
-        list_of_companies = list()
-        for row in table[1:]:
-            list_of_companies.append(row[tuple_cnt])
-        print(list_of_companies)
+        nifty_companies = get_nifty_companies()
+        count = 1
+        while count <= len(nifty_companies):
+            print("Opening all the news for " + nifty_companies[count-1] + " on your default browser. Each news is in a new tab")
+            test_url = get_news_url(nifty_companies[count-1])
+            launch_web_browser(test_url)
+            while True:
+                val = input("Type \"next\" or \"-\" and press enter to go to the next news. REMEBER TO CLOSE THE BROWSER\n")
+                if val == "next" or val == "-":
+                    break
+                elif val == "stop" or val == "?":
+                    count = len(nifty_companies) + 1
+                    break
+            count +=1
+    elif val == "2":
+        company_name = input("Enter the company name : \n")
+        test_url = get_news_url(nifty_companies[count - 1])
+        launch_web_browser(test_url)
 
-        # now we fetch the news
-
+    elif val == "3":
+        print("Bye bye!")
+        quit()
 
 main()
-get_content()
