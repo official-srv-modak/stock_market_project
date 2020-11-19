@@ -29,6 +29,7 @@ except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
 
+browser = "firefox"
 
 def get_table_data(URL):
     """ This is to get the tabular data from the websites"""
@@ -105,8 +106,6 @@ def get_nifty_companies():
 def launch_web_browser(sites):
     print('Opening Sites')
 
-    browser = "firefox"
-
     wbbrowser = webbrowser.get(browser)
     count = 0
     try:
@@ -120,6 +119,7 @@ def launch_web_browser(sites):
             count += 1
     except Exception as e:
         print(e)
+    return browser
 
 def main():
     """ The main function """
@@ -135,12 +135,12 @@ def main():
             count = 1
             while count <= len(nifty_companies):
                 print("Opening all the news for " + nifty_companies[
-                    count - 1] + " on your default browser. Each news is in a new tab")
+                    count - 1] + " on your "+browser+" browser. Each news is in a new tab")
                 test_url = get_news_url(nifty_companies[count - 1])
                 launch_web_browser(test_url)
                 while True:
                     val = input(
-                        "Type \"next\" or \"-\" and press enter to go to the next news. REMEBER TO CLOSE THE BROWSER\n")
+                        "Type \"next\" or \"-\" and press enter to go to the next news. REMEBER TO CLOSE THE BROWSER. \"STOP\" and \"?\" to halt\n")
                     if val == "next" or val == "-":
                         break
                     elif val == "stop" or val == "?":
@@ -149,7 +149,8 @@ def main():
                 count += 1
         elif val == "2":
             company_name = input("Enter the company name : \n")
-            test_url = get_news_url(nifty_companies[count - 1])
+            test_url = get_news_url(company_name)
+            print("Opening all the news for " + company_name + " on your " + browser + " browser. Each news is in a new tab")
             launch_web_browser(test_url)
 
         elif val == "3":
