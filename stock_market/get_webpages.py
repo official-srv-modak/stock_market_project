@@ -112,7 +112,7 @@ def launch_web_browser(sites):
         for url in sites:
             if count == 0:
                 wbbrowser.open_new(url.strip())
-                #time.sleep(1)
+                time.sleep(1)
             else:
                 wbbrowser.open_new_tab(url.strip())
                 time.sleep(1)
@@ -121,7 +121,7 @@ def launch_web_browser(sites):
         print(e)
     return browser
 
-def main():
+def console():
     """ The main function """
 
     print("WELCOME!!! You can use this program to extract information and news on the stock market and table of companies")
@@ -156,5 +156,3 @@ def main():
         elif val == "3":
             print("Bye bye!")
             quit()
-
-main()
