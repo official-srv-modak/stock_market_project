@@ -8,7 +8,7 @@ INDIA
 
 
 from googlesearch import search
-import webbrowser
+import webbrowser, selenium
 import sys
 import time, json
 from bs4 import BeautifulSoup
@@ -105,14 +105,15 @@ def get_nifty_companies():
 def launch_web_browser(sites):
     print('Opening Sites')
 
-    browser = "safari"
+    browser = "firefox"
+
     wbbrowser = webbrowser.get(browser)
     count = 0
     try:
         for url in sites:
             if count == 0:
                 wbbrowser.open_new(url.strip())
-                time.sleep(1)
+                #time.sleep(1)
             else:
                 wbbrowser.open_new_tab(url.strip())
                 time.sleep(1)
@@ -124,32 +125,35 @@ def main():
     """ The main function """
 
     print("WELCOME!!! You can use this program to extract information and news on the stock market and table of companies")
-    print("1. Details on nifty companies")
-    print("2. Details on specific compnaies")
-    print("3. Exit")
-    val = input()
-    if val ==  "1":
-        nifty_companies = get_nifty_companies()
-        count = 1
-        while count <= len(nifty_companies):
-            print("Opening all the news for " + nifty_companies[count-1] + " on your default browser. Each news is in a new tab")
-            test_url = get_news_url(nifty_companies[count-1])
+    while True:
+        print("1. Details on nifty companies")
+        print("2. Details on specific compnaies")
+        print("3. Exit")
+        val = input()
+        if val == "1":
+            nifty_companies = get_nifty_companies()
+            count = 1
+            while count <= len(nifty_companies):
+                print("Opening all the news for " + nifty_companies[
+                    count - 1] + " on your default browser. Each news is in a new tab")
+                test_url = get_news_url(nifty_companies[count - 1])
+                launch_web_browser(test_url)
+                while True:
+                    val = input(
+                        "Type \"next\" or \"-\" and press enter to go to the next news. REMEBER TO CLOSE THE BROWSER\n")
+                    if val == "next" or val == "-":
+                        break
+                    elif val == "stop" or val == "?":
+                        count = len(nifty_companies) + 1
+                        break
+                count += 1
+        elif val == "2":
+            company_name = input("Enter the company name : \n")
+            test_url = get_news_url(nifty_companies[count - 1])
             launch_web_browser(test_url)
-            while True:
-                val = input("Type \"next\" or \"-\" and press enter to go to the next news. REMEBER TO CLOSE THE BROWSER\n")
-                if val == "next" or val == "-":
-                    break
-                elif val == "stop" or val == "?":
-                    count = len(nifty_companies) + 1
-                    break
-            count +=1
-    elif val == "2":
-        company_name = input("Enter the company name : \n")
-        test_url = get_news_url(nifty_companies[count - 1])
-        launch_web_browser(test_url)
 
-    elif val == "3":
-        print("Bye bye!")
-        quit()
+        elif val == "3":
+            print("Bye bye!")
+            quit()
 
 main()
