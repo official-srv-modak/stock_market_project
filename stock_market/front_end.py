@@ -6,7 +6,8 @@ INDIA
 
 """
 import tkinter as tk
-import requests, os
+from tkinter import *
+import os
 from get_webpages import *
 
 HEIGHT = 500
@@ -24,21 +25,27 @@ def on_click_get_news_btn(company_name):
 
 def on_click_nifty_btn():
     nifty_companies = get_nifty_companies()
-    count = 1
-    while count <= len(nifty_companies):
-        print("Opening all the news for " + nifty_companies[
-            count - 1] + " on your " + browser + " browser. Each news is in a new tab")
-        test_url = get_news_url(nifty_companies[count - 1])
-        launch_web_browser(test_url)
-        while True:
-            val = input(
-                "Type \"next\" or \"-\" and press enter to go to the next news. REMEBER TO CLOSE THE BROWSER. \"STOP\" and \"?\" to halt\n")
-            if val == "next" or val == "-":
-                break
-            elif val == "stop" or val == "?":
-                count = len(nifty_companies) + 1
-                break
-        count += 1
+
+    page1 = tk.Tk()
+    page1.title("Nifty Companies")
+
+    canvas1 = tk.Canvas(page1, height=HEIGHT, width=WIDTH)
+    canvas1.pack()
+
+    background_label1 = tk.Label(page1, bg='#80c1ff')
+    background_label1.place(relwidth=1, relheight=1)
+
+    frame = tk.Frame(page1, bg='#80c1ff', bd=5)
+    frame.place(relx=0, rely=0, relwidth=0.75, relheight=1)
+
+    text = tk.Text(frame, font=40)
+    text.place(relwidth=1, relheight=1)
+
+    for companies in nifty_companies:
+        text.insert(INSERT, companies+"\n")
+    page1.mainloop()
+    return
+
 def gui():
     root = tk.Tk()
     root.title("StockALL")
@@ -64,7 +71,7 @@ def gui():
     frame1 = tk.Frame(root, bg='#80c1ff', bd=5)
     frame1.place(relx=0.5, rely=0.6, relwidth=0.3, relheight=0.1, anchor='n')
 
-    button1 = tk.Button(frame1, text="Nifty Companies", font=40, command=lambda: on_click_get_news_btn(entry.get()))
+    button1 = tk.Button(frame1, text="Nifty Companies", font=40, command=lambda: on_click_nifty_btn())
     button1.place(relheight=1, relwidth=1)
 
     root.mainloop()
