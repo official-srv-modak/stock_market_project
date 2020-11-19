@@ -110,12 +110,8 @@ def launch_web_browser(sites):
     count = 0
     try:
         for url in sites:
-            if count == 0:
-                wbbrowser.open_new(url.strip())
-                time.sleep(1)
-            else:
-                wbbrowser.open_new_tab(url.strip())
-                time.sleep(1)
+            wbbrowser.open_new_tab(url.strip())
+            time.sleep(1)
             count += 1
     except Exception as e:
         print(e)
