@@ -45,7 +45,13 @@ def give_pop_up_dialog(message, height, width, button_needed):
 def get_local_revision():
     result = subprocess.run("git log -1", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print(str(result.stdout))
-    local_version = str(result.stdout).split("'")[1].split("\\")[0].split("commit")[1].strip()
+    local_version = ""
+    if (str(result.stdout)):
+        local_version = str(result.stdout).split("'")[1]
+        if local_version:
+            local_version = local_version.split("\\")[0]
+            if local_version:
+                local_version = local_version.split("commit")[1].strip()
     return local_version
 
 def get_remote_repo_version(repository_url):
