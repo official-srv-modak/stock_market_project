@@ -170,7 +170,7 @@ def gui():
     entry.bind("<Button-1>", lambda event: clear_entry(event, entry))
     entry.bind("<Return>", callback)
 
-    button = tk.Button(frame, text="Get news", font=40, command=lambda: on_click_get_news_btn(entry.get(), root))
+    button = tk.Button(frame, text="Get news", font=40, command=lambda: on_click_get_news_btn(entry.get()))
     button.place(relx=0.7, relheight=1, relwidth=0.3)
 
 
