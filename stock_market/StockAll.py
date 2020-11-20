@@ -80,6 +80,7 @@ def on_click_nifty_btn():
 
     page1 = tk.Tk()
     page1.title("Nifty Companies")
+    page1.geometry("700x600")
 
     canvas1 = tk.Canvas(page1, height=HEIGHT, width=WIDTH)
     canvas1.pack()
