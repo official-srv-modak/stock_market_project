@@ -19,7 +19,7 @@ def clear_entry(event, entry):
     if entry.get() == "Company name":
         entry.delete(0, "end")
 
-def on_click_get_news_btn(company_name):
+def on_click_get_news_btn(company_name, frame):
     if company_name and company_name != "Company name":
         test_url = get_news_url(company_name)
         print(
@@ -88,6 +88,13 @@ def on_click_nifty_btn():
     page1.mainloop()
     return
 
+def progressbar(frame):
+    progress = Progressbar(frame, orient=HORIZONTAL, length=100, mode='indeterminate')
+    progress.place(relx=0.5, rely=0.5, relwidth=0.5, anchor="n")
+    progress.pack(pady=20)
+    frame.update_idletasks()
+    time.sleep(1)
+
 def gui():
     root = tk.Tk()
     root.title("StockALL")
@@ -107,11 +114,8 @@ def gui():
     entry.insert(0, 'Company name')
     entry.bind("<Button-1>", lambda event: clear_entry(event, entry))
 
-    button = tk.Button(frame, text="Get news", font=40, command=lambda: on_click_get_news_btn(entry.get()))
+    button = tk.Button(frame, text="Get news", font=40, command=lambda: on_click_get_news_btn(entry.get(), root))
     button.place(relx=0.7, relheight=1, relwidth=0.3)
-
-    progress = Progressbar(root, orient=HORIZONTAL, length=100, mode='indeterminate')
-    progress.place(relx=0.5, relheight=0.1, relwidth=0.3)
 
     frame1 = tk.Frame(root, bg='#80c1ff', bd=5)
     frame1.place(relx=0.5, rely=0.6, relwidth=0.3, relheight=0.1, anchor='n')
