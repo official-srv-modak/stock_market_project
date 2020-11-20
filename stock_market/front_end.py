@@ -124,7 +124,6 @@ def gui():
     except webbrowser.Error:
         print("Mozilla firefox not found in System")
         give_pop_up_dialog("Mozilla firefox not found in System. Redirecting to the download page", 150, 500, True)
-
         t1 = Thread(target=loading_screen).start()
         t2 = Thread(target=download_mozilla).start()
         quit()
