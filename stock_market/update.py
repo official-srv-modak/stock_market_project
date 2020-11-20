@@ -13,7 +13,7 @@ repository_url = "https://github.com/official-srv-modak/StockAll.git"
 update_file_path = "update.bat"
 
 def get_local_revision():
-    result = subprocess.run("git parse HEAD", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    result = subprocess.run("git log -1", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     local_version = str(result.stdout).split("'")[1].split("\\")[0]
     print(local_version)
     return local_version
