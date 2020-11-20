@@ -7,6 +7,7 @@ INDIA
 """
 import tkinter as tk
 from tkinter import *
+from tkinter.ttk import *
 import os
 from get_webpages import *
 
@@ -15,12 +16,18 @@ WIDTH = 600
 
 
 def clear_entry(event, entry):
-    entry.delete(0, "end")
+    if entry.get() == "Company name":
+        entry.delete(0, "end")
 
 def on_click_get_news_btn(company_name):
-    test_url = get_news_url(company_name)
-    print("Opening all the news for " + company_name + " on your " + browser + " browser. Each news is in a new tab")
-    launch_web_browser(test_url)
+    if company_name and company_name != "Company name":
+        test_url = get_news_url(company_name)
+        print(
+            "Opening all the news for " + company_name + " on your " + browser + " browser. Each news is in a new tab")
+        launch_web_browser(test_url)
+        give_pop_up_dialog("All pages loaded")
+    else:
+        give_pop_up_dialog("Enter a valid company name")
 
 def fill_nifty_text(text):
     text.delete(1.0, "end")
@@ -30,8 +37,10 @@ def fill_nifty_text(text):
         text.insert(INSERT, str(count) + ". " + companies + "\n")
         count += 1
 
-def on_click_refresh_button(text):
-    fill_nifty_text(text)
+def close_frame(root):
+    root.destroy()
+
+def give_pop_up_dialog(message):
     dialog = tk.Tk()
     dialog.title("FYI")
 
@@ -41,10 +50,18 @@ def on_click_refresh_button(text):
     frame = tk.Frame(dialog, bg='#80c1ff', bd=5)
     frame.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-    label = tk.Label(frame, text="The list has been refreshed", font=40)
-    label.place(relx=0.2, rely=0.3)
+    label = tk.Label(frame, text=message, font=40)
+    label.place(relx=0.5, rely=0.5, anchor=CENTER)
 
+    button = tk.Button(frame, text="OK", font=40, command=lambda: close_frame(dialog))
+    button.place(relx=0.5, rely=0.8, height=20, width=50, anchor=CENTER)
+
+    dialog.lift()
     dialog.mainloop()
+
+def on_click_refresh_button(text):
+    fill_nifty_text(text)
+    give_pop_up_dialog("The list has been refreshed")
 
 def on_click_nifty_btn():
 
@@ -92,6 +109,9 @@ def gui():
 
     button = tk.Button(frame, text="Get news", font=40, command=lambda: on_click_get_news_btn(entry.get()))
     button.place(relx=0.7, relheight=1, relwidth=0.3)
+
+    progress = Progressbar(root, orient=HORIZONTAL, length=100, mode='indeterminate')
+    progress.place(relx=0.5, relheight=0.1, relwidth=0.3)
 
     frame1 = tk.Frame(root, bg='#80c1ff', bd=5)
     frame1.place(relx=0.5, rely=0.6, relwidth=0.3, relheight=0.1, anchor='n')
