@@ -29,7 +29,7 @@ def update_file():
     StartName = "StockAll.exe"
     filehandle.write("timeout 5\ntaskkill /IM \"StockAll.exe\"\nwmic Path win32_process Where \"CommandLine Like '"+StartName+"'\" Call Terminate\n")
     filehandle.write("git stash\ngit pull\n")
-    filehandle.write("timeout 5\nAutoTut.exe\nexit\n")
+    filehandle.write("timeout 5\nStockAll.exe\nexit\n")
     filehandle.close()
     os.system("start \"\" "+update_file_path)
 
