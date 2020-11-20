@@ -8,6 +8,8 @@ INDIA
 import tkinter as tk
 from tkinter import *
 import webbrowser
+from unittest.mock import call
+
 from googlesearch import search
 from tkinter.ttk import *
 from get_webpages import *
@@ -23,7 +25,7 @@ def clear_entry(event, entry):
     if entry.get() == "Company name":
         entry.delete(0, "end")
 
-def on_click_get_news_btn(company_name, frame):
+def on_click_get_news_btn(company_name):
     if company_name and company_name != "Company name":
         test_url = get_news_url(company_name)
         print(
@@ -153,16 +155,23 @@ def gui():
     background_label = tk.Label(root, image=background_image)
     background_label.place(relwidth=1, relheight=1)
 
-    frame = tk.Frame(root, bg='#80c1ff', bd=5)
-    frame.place(relx=0.5, rely=0.3, relwidth=0.75, relheight=0.1, anchor='n')
+    def callback(event=None):
+        x = entry.get()
+        on_click_get_news_btn(x)
 
+    frame = tk.Frame(root, bg='#80c1ff', bd=5)
     entry = tk.Entry(frame, font=40)
+    frame.place(relx=0.5, rely=0.3, relwidth=0.75, relheight=0.1, anchor='n')
+    frame.bind("<Return>", callback)
+
     entry.place(relwidth=0.65, relheight=1)
     entry.insert(0, 'Company name')
     entry.bind("<Button-1>", lambda event: clear_entry(event, entry))
+    entry.bind("<Return>", callback)
 
     button = tk.Button(frame, text="Get news", font=40, command=lambda: on_click_get_news_btn(entry.get(), root))
     button.place(relx=0.7, relheight=1, relwidth=0.3)
+
 
     frame1 = tk.Frame(root, bg='#80c1ff', bd=5)
     frame1.place(relx=0.5, rely=0.6, relwidth=0.3, relheight=0.1, anchor='n')
