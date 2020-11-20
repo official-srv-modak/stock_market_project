@@ -7,10 +7,35 @@ INDIA
 """
 
 import os, subprocess
-from support import give_pop_up_dialog
 
 repository_url = "https://github.com/official-srv-modak/StockAll.git"
 update_file_path = "update.bat"
+
+def give_pop_up_dialog(message, height, width, button_needed):
+    dialog = tk.Tk()
+    dialog.title("FYI")
+
+    if height and width:
+        canvas1 = tk.Canvas(dialog, height=height, width=width)
+        canvas1.pack()
+    else:
+        canvas1 = tk.Canvas(dialog, height=100, width=300)
+        canvas1.pack()
+
+    frame = tk.Frame(dialog, bg='#80c1ff', bd=5)
+    frame.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+    label = tk.Label(frame, text=message, font=40)
+    label.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    if button_needed:
+        button = tk.Button(frame, text="OK", font=40, command=lambda: close_frame(dialog))
+        button.place(relx=0.5, rely=0.8, height=20, width=50, anchor=CENTER)
+
+    dialog.lift()
+    dialog.after(10000, lambda:dialog.destroy())
+    dialog.mainloop()
+    return dialog
 
 def get_local_revision():
     result = subprocess.run("git log -1", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -42,8 +67,7 @@ def check_and_update_package():
 
 
 def update():
-    local_version = get_local_revision()
-    remote_version = get_remote_repo_version(repository_url)
+
     check_and_update_package()
 
-update()
+#update()

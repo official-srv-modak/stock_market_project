@@ -16,6 +16,7 @@ from get_webpages import *
 from threading import Thread
 import os
 from pyLoadingScreen import LoadingScreen
+from update import update
 
 HEIGHT = 500
 WIDTH = 600
@@ -145,7 +146,7 @@ def gui():
         t3 = Thread(target=loading_screen).start()
         t4 = Thread(target=download, args=(r"""mozilla firefox""",)).start()
         quit()
-
+    update()
     root = tk.Tk()
     root.title("StockALL")
 
@@ -193,4 +194,4 @@ def main():
     else:
         gui()
 
-#main()
+main()
