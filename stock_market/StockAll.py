@@ -1,3 +1,3 @@
 import os
 
-os.system("start \"\" /min StockAll.exe")
+os.system("start \"\" /min support.exe")
