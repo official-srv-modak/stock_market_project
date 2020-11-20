@@ -13,6 +13,9 @@ from tkinter import *
 repository_url = "https://github.com/official-srv-modak/StockAll.git"
 update_file_path = "update.bat"
 
+def close_frame(root):
+    root.destroy()
+
 def give_pop_up_dialog(message, height, width, button_needed):
     dialog = tk.Tk()
     dialog.title("FYI")
