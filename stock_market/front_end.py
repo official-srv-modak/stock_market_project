@@ -106,12 +106,12 @@ def progressbar(frame):
     frame.update_idletasks()
     time.sleep(1)
 
-def download_mozilla():
+def download(query):
     try:
         wbbrowser = webbrowser.get("windows-default")
     except:
         wbbrowser = webbrowser.get("macosx")
-    output = search("download mozilla firefox", lang='en', num=10, stop=10, pause=2)
+    output = search("download "+query, lang='en', num=10, stop=10, pause=2)
     output = list(output)
     wbbrowser.open_new_tab(output[0])
     quit()
@@ -121,14 +121,26 @@ def loading_screen():
 
 def gui():
 
+    x=0
+    #x = os.system("git")
+    import subprocess
+    try:
+        result = subprocess.run("git", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except FileNotFoundError as e:
+        print("git not installed in the system")
+        give_pop_up_dialog("Git not found in system. It is needed to maintain this software.\nWe would like to redirect to the download page.\nJust click next... next...next", 150, 500, True)
+        t1 = Thread(target=loading_screen).start()
+        t2 = Thread(target=download, args=(r"""git for windows""",)).start()
+        quit()
+
     x = os.system(r"""start "" "C:\Program Files\Mozilla Firefox\firefox.exe" """)
     os.system("taskkill /IM firefox.exe /F")
     print(x)
     if x != 0:
         print("Mozilla firefox not found in System")
         give_pop_up_dialog("Mozilla firefox not found in System. Redirecting to the download page", 150, 500, True)
-        t1 = Thread(target=loading_screen).start()
-        t2 = Thread(target=download_mozilla).start()
+        t3 = Thread(target=loading_screen).start()
+        t4 = Thread(target=download, args=(r"""mozilla firefox""",)).start()
         quit()
 
     root = tk.Tk()
