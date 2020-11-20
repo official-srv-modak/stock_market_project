@@ -7,9 +7,12 @@ INDIA
 """
 import tkinter as tk
 from tkinter import *
+import webbrowser
+from googlesearch import search
 from tkinter.ttk import *
-import os
 from get_webpages import *
+from threading import Thread
+from pyLoadingScreen import LoadingScreen
 
 HEIGHT = 500
 WIDTH = 600
@@ -25,9 +28,9 @@ def on_click_get_news_btn(company_name, frame):
         print(
             "Opening all the news for " + company_name + " on your " + browser + " browser. Each news is in a new tab")
         launch_web_browser(test_url)
-        give_pop_up_dialog("All pages loaded")
+        give_pop_up_dialog("All pages loaded", 0, 0, True)
     else:
-        give_pop_up_dialog("Enter a valid company name")
+        give_pop_up_dialog("Enter a valid company name", 0, 0, True)
 
 def fill_nifty_text(text):
     text.delete(1.0, "end")
@@ -40,12 +43,16 @@ def fill_nifty_text(text):
 def close_frame(root):
     root.destroy()
 
-def give_pop_up_dialog(message):
+def give_pop_up_dialog(message, height, width, button_needed):
     dialog = tk.Tk()
     dialog.title("FYI")
 
-    canvas1 = tk.Canvas(dialog, height=100, width=300)
-    canvas1.pack()
+    if height and width:
+        canvas1 = tk.Canvas(dialog, height=height, width=width)
+        canvas1.pack()
+    else:
+        canvas1 = tk.Canvas(dialog, height=100, width=300)
+        canvas1.pack()
 
     frame = tk.Frame(dialog, bg='#80c1ff', bd=5)
     frame.place(relx=0, rely=0, relwidth=1, relheight=1)
@@ -53,15 +60,18 @@ def give_pop_up_dialog(message):
     label = tk.Label(frame, text=message, font=40)
     label.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-    button = tk.Button(frame, text="OK", font=40, command=lambda: close_frame(dialog))
-    button.place(relx=0.5, rely=0.8, height=20, width=50, anchor=CENTER)
+    if button_needed:
+        button = tk.Button(frame, text="OK", font=40, command=lambda: close_frame(dialog))
+        button.place(relx=0.5, rely=0.8, height=20, width=50, anchor=CENTER)
 
     dialog.lift()
+    dialog.after(10000, lambda:dialog.destroy())
     dialog.mainloop()
+    return dialog
 
 def on_click_refresh_button(text):
     fill_nifty_text(text)
-    give_pop_up_dialog("The list has been refreshed")
+    give_pop_up_dialog("The list has been refreshed", 0, 0, True)
 
 def on_click_nifty_btn():
 
@@ -95,7 +105,30 @@ def progressbar(frame):
     frame.update_idletasks()
     time.sleep(1)
 
+def download_mozilla():
+    try:
+        wbbrowser = webbrowser.get("windows-default")
+    except:
+        wbbrowser = webbrowser.get("macosx")
+    output = search("download mozilla firefox", lang='en', num=10, stop=10, pause=2)
+    output = list(output)
+    wbbrowser.open_new_tab(output[0])
+    quit()
+
+def loading_screen():
+    frame = give_pop_up_dialog("Loading... Please wait...", 100, 200, False)
+
 def gui():
+    try:
+        wbbrowser = webbrowser.get("firefox")
+    except webbrowser.Error:
+        print("Mozilla firefox not found in System")
+        give_pop_up_dialog("Mozilla firefox not found in System. Redirecting to the download page", 150, 500, True)
+
+        t1 = Thread(target=loading_screen).start()
+        t2 = Thread(target=download_mozilla).start()
+        quit()
+
     root = tk.Tk()
     root.title("StockALL")
 

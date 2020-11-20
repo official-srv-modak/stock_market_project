@@ -8,16 +8,13 @@ INDIA
 
 
 from googlesearch import search
-import webbrowser, selenium
-import sys
-import time, json
-from bs4 import BeautifulSoup
+import webbrowser
+import time
 from urllib.request import Request, urlopen
 import urllib.request
-from pprint import pprint
-from html_table_parser import HTMLTableParser
-import pandas as pd
-import os
+from html_table_parser import *
+
+
 import re
 
 """from nltk.corpus import wordnet as wn
@@ -57,8 +54,8 @@ def get_companies_table(query):
         try:
             table = get_table_data(url) #filter on the table variable
             return table
-        except:
-            print("Sorry no table in the url... Trying another")
+        except :
+            print("Sorry some error in the url... Trying another")
             continue
 
 def filter_table(table):
