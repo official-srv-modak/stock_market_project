@@ -13,6 +13,7 @@ import time
 from urllib.request import Request, urlopen
 import urllib.request
 from html_table_parser import *
+import os
 
 
 import re
@@ -101,13 +102,12 @@ def get_nifty_companies():
 
 
 def launch_web_browser(sites):
-    print('Opening Sites')
+    print('Opening Sites in '+browser+" browser")
 
-    wbbrowser = webbrowser.get(browser)
     count = 0
     try:
         for url in sites:
-            wbbrowser.open_new_tab(url.strip())
+            os.system(r"""start "" "C:\Program Files\Mozilla Firefox\firefox.exe" -new-tab """+url.strip())
             time.sleep(1)
             count += 1
     except Exception as e:

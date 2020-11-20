@@ -12,6 +12,7 @@ from googlesearch import search
 from tkinter.ttk import *
 from get_webpages import *
 from threading import Thread
+import os
 from pyLoadingScreen import LoadingScreen
 
 HEIGHT = 500
@@ -119,9 +120,11 @@ def loading_screen():
     frame = give_pop_up_dialog("Loading... Please wait...", 100, 200, False)
 
 def gui():
-    try:
-        wbbrowser = webbrowser.get("firefox")
-    except webbrowser.Error:
+
+    x = os.system(r"""start "" "C:\Program Files\Mozilla Firefox\firefox.exe" """)
+    os.system("taskkill /IM firefox.exe /F")
+    print(x)
+    if x != 0:
         print("Mozilla firefox not found in System")
         give_pop_up_dialog("Mozilla firefox not found in System. Redirecting to the download page", 150, 500, True)
         t1 = Thread(target=loading_screen).start()
