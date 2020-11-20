@@ -148,4 +148,5 @@ def console():
 
         elif val == "3":
             print("Bye bye!")
+            break
             quit()
