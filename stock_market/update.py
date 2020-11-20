@@ -7,6 +7,8 @@ INDIA
 """
 
 import os, subprocess
+import tkinter as tk
+from tkinter import *
 
 repository_url = "https://github.com/official-srv-modak/StockAll.git"
 update_file_path = "update.bat"
