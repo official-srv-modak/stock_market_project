@@ -37,15 +37,15 @@ def give_pop_up_dialog(message, height, width, button_needed):
         button = tk.Button(frame, text="OK", font=40, command=lambda: close_frame(dialog))
         button.place(relx=0.5, rely=0.8, height=20, width=50, anchor=CENTER)
 
-    dialog.lift()
+    dialog.attributes("-topmost", True)
     dialog.after(10000, lambda:dialog.destroy())
     dialog.mainloop()
     return dialog
 
 def get_local_revision():
     result = subprocess.run("git log -1", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print(str(result.stdout))
     local_version = str(result.stdout).split("'")[1].split("\\")[0].split("commit")[1].strip()
-    print(local_version)
     return local_version
 
 def get_remote_repo_version(repository_url):
@@ -56,8 +56,8 @@ def get_remote_repo_version(repository_url):
 
 def update_file():
     filehandle = open(update_file_path, 'w')
-    StartName = "StockAll.exe"
-    filehandle.write("timeout 5\ntaskkill /IM \"StockAll.exe\"\nwmic Path win32_process Where \"CommandLine Like '"+StartName+"'\" Call Terminate\n")
+    StartName = "support.exe"
+    filehandle.write("taskkill /IM \"support.exe\"\nwmic Path win32_process Where \"CommandLine Like '"+StartName+"'\" Call Terminate\n")
     filehandle.write("git stash\ngit pull\n")
     filehandle.write("timeout 5\nStockAll.exe\nexit\n")
     filehandle.close()
