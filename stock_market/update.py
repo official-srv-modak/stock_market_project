@@ -14,7 +14,7 @@ update_file_path = "update.bat"
 
 def get_local_revision():
     result = subprocess.run("git log -1", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    local_version = str(result.stdout).split("'")[1].split("\\")[0]
+    local_version = str(result.stdout).split("'")[1].split("\\")[0].split("commit")[1].strip()
     print(local_version)
     return local_version
 
@@ -38,10 +38,12 @@ def check_and_update_package():
     remote_version = get_remote_repo_version(repository_url)
     if local_version != remote_version:
         give_pop_up_dialog("New update detected, the system will update", 100, 400, True)
+        update_file()
 
 
 def update():
     local_version = get_local_revision()
     remote_version = get_remote_repo_version(repository_url)
+    check_and_update_package()
 
 update()
