@@ -68,7 +68,7 @@ def give_pop_up_dialog(message, height, width, button_needed):
         button = tk.Button(frame, text="OK", font=40, command=lambda: close_frame(dialog))
         button.place(relx=0.5, rely=0.8, height=20, width=50, anchor=CENTER)
 
-    dialog.lift()
+    dialog.attributes("-topmost", True)
     dialog.after(10000, lambda:dialog.destroy())
     dialog.mainloop()
     return dialog
@@ -181,6 +181,7 @@ def gui():
     button1 = tk.Button(frame1, text="Nifty Companies", font=40, command=lambda: on_click_nifty_btn())
     button1.place(relheight=1, relwidth=1)
 
+    root.attributes("-topmost", True)
     root.mainloop()
 
 def main():
