@@ -18,13 +18,35 @@ def clear_entry(event, entry):
     entry.delete(0, "end")
 
 def on_click_get_news_btn(company_name):
-
     test_url = get_news_url(company_name)
     print("Opening all the news for " + company_name + " on your " + browser + " browser. Each news is in a new tab")
     launch_web_browser(test_url)
 
-def on_click_nifty_btn():
+def fill_nifty_text(text):
+    text.delete(1.0, "end")
     nifty_companies = get_nifty_companies()
+    count = 1
+    for companies in nifty_companies:
+        text.insert(INSERT, str(count) + ". " + companies + "\n")
+        count += 1
+
+def on_click_refresh_button(text):
+    fill_nifty_text(text)
+    dialog = tk.Tk()
+    dialog.title("FYI")
+
+    canvas1 = tk.Canvas(dialog, height=100, width=300)
+    canvas1.pack()
+
+    frame = tk.Frame(dialog, bg='#80c1ff', bd=5)
+    frame.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+    label = tk.Label(frame, text="The list has been refreshed", font=40)
+    label.place(relx=0.2, rely=0.3)
+
+    dialog.mainloop()
+
+def on_click_nifty_btn():
 
     page1 = tk.Tk()
     page1.title("Nifty Companies")
@@ -39,10 +61,13 @@ def on_click_nifty_btn():
     frame.place(relx=0, rely=0, relwidth=0.75, relheight=1)
 
     text = tk.Text(frame, font=40)
-    text.place(relwidth=1, relheight=1)
+    text.place(relwidth=0.7, relheight=1)
 
-    for companies in nifty_companies:
-        text.insert(INSERT, companies+"\n")
+    button = tk.Button(frame, text="Refresh", font=40, command=lambda: on_click_refresh_button(text))
+    button.place(relx=0.7, relheight=0.1, relwidth=0.3)
+
+    fill_nifty_text(text)
+
     page1.mainloop()
     return
 
