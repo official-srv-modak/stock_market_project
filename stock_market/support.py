@@ -14,8 +14,7 @@ from googlesearch import search
 from tkinter.ttk import *
 from get_webpages import *
 from threading import Thread
-import os
-from pyLoadingScreen import LoadingScreen
+import os,sys
 from update import update
 
 HEIGHT = 500
@@ -123,16 +122,17 @@ def download(query):
 def loading_screen():
     frame = give_pop_up_dialog("Loading... Please wait...", 100, 200, False)
 
-def gui():
-
-    x=0
-    #x = os.system("git")
+def prerun_process():
+    x = 0
+    # x = os.system("git")
     import subprocess
     try:
         result = subprocess.run("git", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except FileNotFoundError as e:
         print("git not installed in the system")
-        give_pop_up_dialog("Git not found in system. It is needed to maintain this software.\nWe would like to redirect to the download page.\nJust click next... next...next", 150, 500, True)
+        give_pop_up_dialog(
+            "Git not found in system. It is needed to maintain this software.\nWe would like to redirect to the download page.\nJust click next... next...next",
+            150, 500, True)
         t1 = Thread(target=loading_screen).start()
         t2 = Thread(target=download, args=(r"""git for windows""",)).start()
         quit()
@@ -146,7 +146,11 @@ def gui():
         t3 = Thread(target=loading_screen).start()
         t4 = Thread(target=download, args=(r"""mozilla firefox""",)).start()
         quit()
-    update()
+
+def gui():
+
+    #prerun_process()
+    #update()
     root = tk.Tk()
     root.title("StockALL")
 
